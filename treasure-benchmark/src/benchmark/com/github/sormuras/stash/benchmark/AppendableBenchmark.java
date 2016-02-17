@@ -1,5 +1,6 @@
 package com.github.sormuras.stash.benchmark;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 
 import org.openjdk.jmh.annotations.Benchmark;
@@ -45,6 +46,42 @@ public class AppendableBenchmark {
     }
   }
 
+  @State(Scope.Thread)
+  public static class AppendableStashHolder implements Appndble {
+        
+    final Appndble appendable;
+    final ByteBuffer buffer;
+    final StringBuilder builder;
+    
+    public AppendableStashHolder() {
+      this.buffer = ByteBuffer.allocate(10000);
+      this.appendable = new AppndbleStash(this, buffer);
+      this.builder = new StringBuilder();
+    }
+    
+    Appendable get() {
+      builder.setLength(0);
+      buffer.clear();
+      buffer.putLong(0);
+      return appendable;
+    }
+
+    @Override
+    public Appendable append(CharSequence csq) throws IOException {
+      return builder.append(csq);
+    }
+
+    @Override
+    public Appendable append(CharSequence csq, int start, int end) throws IOException {
+      return builder.append(csq, start, end);
+    }
+
+    @Override
+    public Appendable append(char c) throws IOException {
+      return builder.append(c);
+    }
+  }
+
   public static void main(String... args) throws Exception {
     Options opts = new OptionsBuilder()
         .include(".*")
@@ -64,6 +101,11 @@ public class AppendableBenchmark {
 
   @Benchmark
   public void proxy(Blackhole blackhole, AppendableProxyHolder holder) throws Exception {
+    blackhole.consume(holder.get().append('@').append("abc").append("abcdef", 3, 6));
+  }
+  
+  @Benchmark
+  public void stash(Blackhole blackhole, AppendableStashHolder holder) throws Exception {
     blackhole.consume(holder.get().append('@').append("abc").append("abcdef", 3, 6));
   }
 
