@@ -2,7 +2,7 @@ package com.github.sormuras.stash.benchmark;
 
 import com.github.sormuras.stash.Stash;
 
-@Stash.Interface
-public interface Appndble extends Appendable {
+@Stash.Interface(verify=true)
+public interface AppenableVerify extends Appendable {
   // empty
 }

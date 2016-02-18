@@ -47,15 +47,15 @@ public class AppendableBenchmark {
   }
 
   @State(Scope.Thread)
-  public static class AppendableStashHolder implements Appndble {
+  public static class AppendableVerifyStashHolder implements AppenableVerify {
         
-    final Appndble appendable;
+    final AppenableVerify appendable;
     final ByteBuffer buffer;
     final StringBuilder builder;
     
-    public AppendableStashHolder() {
+    public AppendableVerifyStashHolder() {
       this.buffer = ByteBuffer.allocate(10000);
-      this.appendable = new AppndbleStash(this, buffer);
+      this.appendable = new AppenableVerifyStash(this, buffer);
       this.builder = new StringBuilder();
     }
     
@@ -76,6 +76,42 @@ public class AppendableBenchmark {
       return builder.append(csq, start, end);
     }
 
+    @Override
+    public Appendable append(char c) throws IOException {
+      return builder.append(c);
+    }
+  }
+  
+  @State(Scope.Thread)
+  public static class AppendableQuickStashHolder implements AppenableQuick {
+    
+    final AppenableQuick appendable;
+    final ByteBuffer buffer;
+    final StringBuilder builder;
+    
+    public AppendableQuickStashHolder() {
+      this.buffer = ByteBuffer.allocate(10000);
+      this.appendable = new AppenableQuickStash(this, buffer);
+      this.builder = new StringBuilder();
+    }
+    
+    Appendable get() {
+      builder.setLength(0);
+      buffer.clear();
+      buffer.putLong(0);
+      return appendable;
+    }
+    
+    @Override
+    public Appendable append(CharSequence csq) throws IOException {
+      return builder.append(csq);
+    }
+    
+    @Override
+    public Appendable append(CharSequence csq, int start, int end) throws IOException {
+      return builder.append(csq, start, end);
+    }
+    
     @Override
     public Appendable append(char c) throws IOException {
       return builder.append(c);
@@ -105,7 +141,12 @@ public class AppendableBenchmark {
   }
   
   @Benchmark
-  public void stash(Blackhole blackhole, AppendableStashHolder holder) throws Exception {
+  public void stashVerify(Blackhole blackhole, AppendableVerifyStashHolder holder) throws Exception {
+    blackhole.consume(holder.get().append('@').append("abc").append("abcdef", 3, 6));
+  }
+  
+  @Benchmark
+  public void stashQuick(Blackhole blackhole, AppendableVerifyStashHolder holder) throws Exception {
     blackhole.consume(holder.get().append('@').append("abc").append("abcdef", 3, 6));
   }
 
