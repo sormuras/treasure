@@ -10,5 +10,6 @@
 	<classpathentry kind="lib" path="lib/jmh-core-1.11.3.jar"/>
 	<classpathentry kind="lib" path="lib/stash-1.0.0-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="lib/commons-math3-3.6.jar"/>
+	<classpathentry kind="lib" path="lib/prevayler-core-2.6.jar"/>
 	<classpathentry kind="output" path="bin/eclipse/classes"/>
 </classpath>
