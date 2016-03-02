@@ -149,7 +149,7 @@ public class AppendableBenchmark {
       }
       Treasure<AppenableQuick> treasure = Treasure.create(this, tmp, 10000);
       this.appendable = new AppenableQuickStash(treasure);
-      this.buffer = treasure.journal.get();
+      this.buffer = treasure.getJournal().get();
       this.builder = new StringBuilder();
     }
 
