@@ -1,7 +1,7 @@
 package com.github.sormuras.stash.benchmark.bank.prevayler;
 
 import java.io.File;
-import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,7 +25,6 @@ import org.prevayler.implementation.snapshot.NullSnapshotManager;
 
 import com.github.sormuras.stash.benchmark.bank.Bank;
 import com.github.sormuras.stash.benchmark.bank.Status;
-
 
 public class PrevaylerBank implements Bank<Integer> {
 
@@ -69,10 +68,11 @@ public class PrevaylerBank implements Bank<Integer> {
 
   private final Prevayler<Map<Integer, PrevaylerAccount>> prevayler;
 
-  public PrevaylerBank(File folder, int threads) {
+  public PrevaylerBank(Path folder) {
     try {
       Map<Integer, PrevaylerAccount> prevalentSystem = new HashMap<>();
-      this.prevayler = folder != null ? prevayler(prevalentSystem, folder) : prevaylerTransient(prevalentSystem);
+      this.prevayler = folder != null ?
+          prevayler(prevalentSystem, folder.toFile()) : prevaylerTransient(prevalentSystem);
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
@@ -83,6 +83,7 @@ public class PrevaylerBank implements Bank<Integer> {
     return prevayler.execute(new CreateAccountsTransaction(numberOfAccounts));
   }
 
+  @Override
   public Status status(Integer id) {
     try {
       return prevayler.execute(new GetAccountStatusQuery(id));
@@ -91,22 +92,9 @@ public class PrevaylerBank implements Bank<Integer> {
     }
   }
 
-  public void tearDown() {
-    try {
-      prevayler.close();
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-  }
-
   @Override
-  public String toString() {
-    return prevayler.toString();
-  }
-
   public void transfer(Integer from, Integer to, int amount) {
     prevayler.execute(new TransferTransaction(from, to, amount));
   }
-
 
 }
