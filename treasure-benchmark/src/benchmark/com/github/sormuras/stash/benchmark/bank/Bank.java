@@ -2,9 +2,7 @@ package com.github.sormuras.stash.benchmark.bank;
 
 import java.io.Serializable;
 
-public interface Bank<A> extends Serializable, AutoCloseable {
-
-  void close();
+public interface Bank<A> extends Serializable {
 
   A[] createAccounts(Integer numberOfAccounts);
 

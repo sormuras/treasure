@@ -8,13 +8,8 @@ import com.github.sormuras.stash.benchmark.bank.Status;
 public class DefaultBank implements Bank {
 
   private static final long serialVersionUID = -452262500786749842L;
-  
-  private final Map<Integer, Account> accounts = new LinkedHashMap<>();
 
-  @Override
-  public void close() {
-    accounts.clear();
-  }
+  private final Map<Integer, Account> accounts = new LinkedHashMap<>();
 
   @Override
   public Integer[] createAccounts(Integer numberOfAccounts) {
@@ -33,7 +28,7 @@ public class DefaultBank implements Bank {
   @Override
   public void transfer(Integer from, Integer to, int amount) {
     accounts.get(from).transfer(-amount);
-    accounts.get(to).transfer(amount);    
+    accounts.get(to).transfer(amount);
   }
 
 }

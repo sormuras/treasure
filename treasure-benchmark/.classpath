@@ -8,7 +8,7 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="lib" path="lib/jmh-core-1.11.3.jar" sourcepath="C:/Users/Sor/.m2/repository/org/openjdk/jmh/jmh-core/1.11.3/jmh-core-1.11.3-sources.jar"/>
-	<classpathentry kind="lib" path="lib/stash-1.0.0-SNAPSHOT-201603021633.jar"/>
+	<classpathentry kind="lib" path="lib/stash-1.0.0-SNAPSHOT-201603032140.jar"/>
 	<classpathentry kind="lib" path="lib/commons-math3-3.6.jar"/>
 	<classpathentry kind="lib" path="lib/prevayler-core-2.6.jar"/>
 	<classpathentry kind="output" path="bin/eclipse/classes"/>

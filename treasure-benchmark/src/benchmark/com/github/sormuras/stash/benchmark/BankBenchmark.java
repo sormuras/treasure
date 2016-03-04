@@ -47,7 +47,7 @@ public class BankBenchmark {
           .include(BankBenchmark.class.getSimpleName())
           .warmupIterations(3)
           .measurementIterations(3)
-          .measurementTime(TimeValue.seconds(10))
+          .measurementTime(TimeValue.seconds(3))
           .threads(threads)
           .forks(1)
           .build();
