@@ -4,9 +4,9 @@ import java.io.Serializable;
 
 public interface Bank<A> extends Serializable {
 
-  A[] createAccounts(Integer numberOfAccounts);
+  A[] create(Integer numberOfAccounts);
 
-  Status getAccountStatus(A id);
+  Status status(A id);
 
   void transfer(A from, A to, int amount);
 

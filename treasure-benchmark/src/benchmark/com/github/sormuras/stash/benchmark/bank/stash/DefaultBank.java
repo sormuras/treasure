@@ -12,7 +12,7 @@ public class DefaultBank implements Bank {
   private final Map<Integer, Account> accounts = new LinkedHashMap<>();
 
   @Override
-  public Integer[] createAccounts(Integer numberOfAccounts) {
+  public Integer[] create(Integer numberOfAccounts) {
     for (int i = 0; i < numberOfAccounts; i++) {
       accounts.put(Integer.valueOf(i), new Account());
     }
@@ -20,7 +20,7 @@ public class DefaultBank implements Bank {
   }
 
   @Override
-  public Status getAccountStatus(Integer id) {
+  public Status status(Integer id) {
     Account account = accounts.get(id);
     return new Status(account.getBalance(), account.getTransferValues());
   }

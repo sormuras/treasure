@@ -6,10 +6,10 @@ import com.github.sormuras.stash.benchmark.bank.Status;
 @Stash.Interface(verify = true)
 public interface Bank extends com.github.sormuras.stash.benchmark.bank.Bank<Integer> {
 
-  Integer[] createAccounts(Integer numberOfAccounts);
+  Integer[] create(Integer numberOfAccounts);
 
   @Stash.Volatile
-  Status getAccountStatus(Integer id);
+  Status status(Integer id);
 
   void transfer(Integer from, Integer to, int amount);
 

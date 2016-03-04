@@ -32,17 +32,16 @@ public class BankBenchmark {
       return random.nextInt(NUMBER_OF_ACCOUNTS);
     }
 
-    boolean flip() {
-      return random.nextInt(100) < 20;
+    boolean flip(int chance) {
+      return random.nextInt(100) < chance;
     }
   }
 
-  public static final int CHANCE_OF_TRANSER = 20; // 0..100
   public static final int NUMBER_OF_ACCOUNTS = 100;
+  public static final long JOURNAL_SIZE = 100 * 1024 * 1024;
 
   public static void main(String... args) throws Exception {
-    // Runtime.getRuntime().availableProcessors()
-    for (int threads = 1; threads <= 2; threads++) {
+    for (int threads = 1; threads <= 4; threads++) {
       Options opts = new OptionsBuilder()
           .include(BankBenchmark.class.getSimpleName())
           .warmupIterations(3)
@@ -59,21 +58,53 @@ public class BankBenchmark {
   private Path temp;
 
   @Setup(Level.Iteration)
-  public void setup(BenchmarkParams params) throws Exception {
-    temp = Files.createTempDirectory("BankBench-" + params.getThreads() + "-");
-    bank = new BankStash(Treasure.create(new DefaultBank(), temp, 100 * 1024 * 1024));
+  public void before(BenchmarkParams params) throws Exception {
+    long size = JOURNAL_SIZE;
+    if (params.getBenchmark().endsWith("BankBenchmark.transfer")) {
+      size = 10 * JOURNAL_SIZE;
+    }
+    temp = Files.createTempDirectory(params.getBenchmark() + "-" + params.getThreads() + "-");
+    bank = new BankStash(Treasure.create(new DefaultBank(), temp, size));
     if (params.getThreads() > 1) {
       bank = new BankLock(bank);
     }
-    bank.createAccounts(NUMBER_OF_ACCOUNTS);
+    bank.create(NUMBER_OF_ACCOUNTS);
   }
 
   @Benchmark
-  public void stash(Coin coin) {
-    if (coin.flip()) {
+  public void mixed_10(Coin coin) {
+    if (coin.flip(10)) {
       bank.transfer(coin.any(), coin.any(), coin.any());
     } else {
-      bank.getAccountStatus(coin.any());
+      bank.status(coin.any());
     }
+  }
+
+  @Benchmark
+  public void mixed_20(Coin coin) {
+    if (coin.flip(20)) {
+      bank.transfer(coin.any(), coin.any(), coin.any());
+    } else {
+      bank.status(coin.any());
+    }
+  }
+
+  @Benchmark
+  public void mixed_50(Coin coin) {
+    if (coin.flip(50)) {
+      bank.transfer(coin.any(), coin.any(), coin.any());
+    } else {
+      bank.status(coin.any());
+    }
+  }
+
+  @Benchmark
+  public void readonly(Coin coin) {
+    bank.status(coin.any());
+  }
+
+  @Benchmark
+  public void transfer(Coin coin) {
+    bank.transfer(coin.any(), coin.any(), coin.any());
   }
 }
