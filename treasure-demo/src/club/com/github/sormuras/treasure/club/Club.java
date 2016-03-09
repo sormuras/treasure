@@ -14,7 +14,6 @@ public interface Club extends AutoCloseable {
   void rename(int number, String newName);
 
   static void main(String[] args) throws Exception {
-    // Path tmp = Files.createTempDirectory("club-");
     ByteBuffer tmp1 = ByteBuffer.allocate(1000);
     try (Club club = Stash.create(Club.class, new Disco(), tmp1)) {
       club.create("Aaron");
@@ -29,7 +28,6 @@ public interface Club extends AutoCloseable {
       club.create("Carla");
       club.rename(1, "Bartholomaeus");
     }
-    tmp2.flip();
     System.out.println(tmp1.equals(tmp2));
   }
 
