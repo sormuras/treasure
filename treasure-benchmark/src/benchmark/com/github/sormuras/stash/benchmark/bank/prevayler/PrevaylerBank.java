@@ -71,8 +71,7 @@ public class PrevaylerBank implements Bank<Integer> {
   public PrevaylerBank(Path folder) {
     try {
       Map<Integer, PrevaylerAccount> prevalentSystem = new HashMap<>();
-      this.prevayler = folder != null ?
-          prevayler(prevalentSystem, folder.toFile()) : prevaylerTransient(prevalentSystem);
+      this.prevayler = folder != null ? prevayler(prevalentSystem, folder.toFile()) : prevaylerTransient(prevalentSystem);
     } catch (Exception e) {
       throw new RuntimeException(e);
     }

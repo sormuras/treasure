@@ -18,7 +18,6 @@ import org.openjdk.jmh.runner.options.TimeValue;
 import com.github.sormuras.stash.benchmark.bank.Bank;
 import com.github.sormuras.stash.benchmark.bank.prevayler.PrevaylerBank;
 
-
 @State(Scope.Benchmark)
 public class BankylerBenchmark {
 
