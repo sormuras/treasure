@@ -5,13 +5,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
-public class InterfaceDelegator implements Interface {
+public class InterfaceStash implements Interface {
 
 	protected final ByteBuffer buffer;
 	protected int counter;
 	protected final Interface delegate;
 
-	public InterfaceDelegator(ByteBuffer buffer, Interface delegate) {
+	public InterfaceStash(ByteBuffer buffer, Interface delegate) {
 		this.delegate = delegate;
 		this.buffer = buffer;
 		this.counter = buffer.getInt();
@@ -39,8 +39,7 @@ public class InterfaceDelegator implements Interface {
 		int $expectedPosition = this.buffer.position();
 		this.buffer.reset();
 		int $result = simple$0x8D2CEDD3L();
-		assert $expectedPosition == this.buffer.position() : "expected position " + $expectedPosition + ", but it is "
-				+ this.buffer.position();
+		assert $expectedPosition == this.buffer.position();
 		this.buffer.putInt(0, ++counter);
 		return $result;
 	}
