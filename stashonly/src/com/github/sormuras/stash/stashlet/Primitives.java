@@ -32,9 +32,12 @@ public interface Primitives {
 		public String getPutStatement(String name) {
 			return BUFFER + ".putInt(" + name + ")";
 		}
-		
+
+		/**
+		 * @return "int"
+		 */
 		@Override
-		public String getTypeUsage() {
+		public String getSourceSnippet() {
 			return "int";
 		}
 

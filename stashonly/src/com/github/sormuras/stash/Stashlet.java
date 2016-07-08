@@ -19,8 +19,15 @@ public interface Stashlet {
 	String getGetStatement();
 
 	String getPutStatement(String name);
-	
-	String getTypeUsage();
+
+	/**
+	 * Returns an informative string representation of this type. The string is
+	 * of a form suitable for representing this type in source code. Any names
+	 * embedded in the result are qualified.
+	 * 
+	 * @return source code representation of this type.
+	 */
+	String getSourceSnippet();
 
 	Object runtimeGet(ByteBuffer source);
 
